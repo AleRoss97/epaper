@@ -33,7 +33,7 @@ This will generate:
 
 Opened issues:
 
-- Reading from the display always reads 0 - This is not a big issue since no values need to be red from the display, however **this makes the self test fail**.
+- Reading from the display always reads 0 - This is not a big issue since no values need to be red from the display, however **this makes the self test fail** but everything else works ok.
 
 ## Work in progress
 
@@ -43,7 +43,12 @@ This i'm working on and eventually do and update:
 
 ## Useful links
 
+Resource i find useful to build this:
+
 [Display controller datasheet](https://annejan.com/media/SSD1608_1.2.pdf)
+
 [Raspberry PI Zero W datasheet](https://www.raspberrypi.org/app/uploads/2012/02/BCM2835-ARM-Peripherals.pdf)
+
 [Ben Krasnow fast update implementation for epaper](https://benkrasnow.blogspot.com/2017/10/fast-partial-refresh-on-42-e-paper.html)
+
 [InkyPhat/InkyWhat python library github repository](https://github.com/pimoroni/inky)
