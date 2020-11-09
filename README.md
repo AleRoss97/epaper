@@ -52,3 +52,5 @@ Resource i find useful to build this:
 [Ben Krasnow fast update implementation for epaper](https://benkrasnow.blogspot.com/2017/10/fast-partial-refresh-on-42-e-paper.html)
 
 [InkyPhat/InkyWhat python library github repository](https://github.com/pimoroni/inky)
+
+[Success thread oni fast updating for SSD1675A controllers](https://forums.pimoroni.com/t/my-inky-phat-clock-refresh-speed-question/6955/5)
