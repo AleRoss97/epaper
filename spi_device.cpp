@@ -14,6 +14,8 @@
 #include <unistd.h>   /* For open(), creat() */
 #include <sys/ioctl.h> /* For ioctl() */
 
+#define LOG(...) printf("\033[0;33m[GRAP]"); printf(__VA_ARGS__); printf("\033[0m\n");
+
 static void assert(uint8_t cond, char* desc) {
 
 	if (!cond) {
@@ -37,12 +39,12 @@ spi_device::spi_device(
 	int status_value4 = -1;
 	int status_value5 = -1;
 
-	printf("[SPI ] Open device.\n");
+	LOG("Open device.");
 
 	fd = open(spi_device, O_RDWR);
 	assert(fd >= 0, "Unable to open the device file.");
 
-	printf("[SPI ] Set parameters for device.\n");
+	LOG("Set parameters for device.");
 
 	status_value0 = ioctl(fd, SPI_IOC_WR_MODE, &spi_mode);
 	status_value1 = ioctl(fd, SPI_IOC_RD_MODE, &spi_mode);
@@ -58,7 +60,7 @@ spi_device::spi_device(
 	assert(status_value4 >= 0, "Unable to set SPI_IOC_WR_MAX_SPEED_HZ.");
 	assert(status_value5 >= 0, "Unable to set SPI_IOC_RD_MAX_SPEED_HZ.");
 
-	printf("[SPI ] Save value.\n");
+	LOG("Save value.");
 
 	dev_mode = spi_mode;
 	dev_bitn = spi_bitn;
@@ -68,7 +70,7 @@ spi_device::spi_device(
 
 spi_device::~spi_device() {
 
-	printf("[SPI ] Close the device.\n");
+	LOG("Close the device.");
 
 	close(fd);
 	assert(fd >= 0, "Unable to close the device file.");

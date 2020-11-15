@@ -16,6 +16,8 @@
 #include <unistd.h>   /* For open(), creat() */
 #include "gpio_device.h"
 
+#define LOG(...) printf("\033[0;32m[GRAP]"); printf(__VA_ARGS__); printf("\033[0m\n");
+
 static void assert(uint8_t cond, char* desc) {
 
 	if (!cond) {
@@ -56,7 +58,7 @@ static void assert(uint8_t cond, char* desc) {
 
 gpio_device::gpio_device() {
 
-	printf("[GPIO] Mapping memory.\n");
+	LOG("Mapping memory.");
 
 	mem_fd = open("/dev/gpiomem", O_RDWR);
 	assert(mem_fd >= 0, "Unable to open memory file.");
@@ -82,25 +84,25 @@ gpio_device::gpio_device() {
 	gpio_pudclk[0] = (uint32_t*)(start_addr+(REG_GPPUDCLK0-REG_GPFSEL0));
 	gpio_pudclk[1] = (uint32_t*)(start_addr+(REG_GPPUDCLK1-REG_GPFSEL0));
 
-	printf("[GPIO] | ------------- | ---------- | ---------- | ---------- | ---------- |\n");
-	printf("[GPIO] | Name          | Original   | Offset     | Mapped     | Value      |\n");
-	printf("[GPIO] | ------------- | ---------- | ---------- | ---------- | ---------- |\n");
-	printf("[GPIO] | REG_GPFSEL0   | 0x%08X | 0x%08X | 0x%08X | 0x%08X |\n", REG_GPFSEL0,   (REG_GPFSEL0-REG_GPFSEL0),   gpio_fsel[0],   (*gpio_fsel[0])   );
-	printf("[GPIO] | REG_GPFSEL1   | 0x%08X | 0x%08X | 0x%08X | 0x%08X |\n", REG_GPFSEL1,   (REG_GPFSEL1-REG_GPFSEL0),   gpio_fsel[1],   (*gpio_fsel[1])   );
-	printf("[GPIO] | REG_GPFSEL2   | 0x%08X | 0x%08X | 0x%08X | 0x%08X |\n", REG_GPFSEL2,   (REG_GPFSEL2-REG_GPFSEL0),   gpio_fsel[2],   (*gpio_fsel[2])   );
-	printf("[GPIO] | REG_GPFSEL3   | 0x%08X | 0x%08X | 0x%08X | 0x%08X |\n", REG_GPFSEL3,   (REG_GPFSEL3-REG_GPFSEL0),   gpio_fsel[3],   (*gpio_fsel[3])   );
-	printf("[GPIO] | REG_GPFSEL4   | 0x%08X | 0x%08X | 0x%08X | 0x%08X |\n", REG_GPFSEL4,   (REG_GPFSEL4-REG_GPFSEL0),   gpio_fsel[4],   (*gpio_fsel[4])   );
-	printf("[GPIO] | REG_GPFSEL5   | 0x%08X | 0x%08X | 0x%08X | 0x%08X |\n", REG_GPFSEL5,   (REG_GPFSEL5-REG_GPFSEL0),   gpio_fsel[5],   (*gpio_fsel[5])   );
-	printf("[GPIO] | REG_GPSET0    | 0x%08X | 0x%08X | 0x%08X | 0x%08X |\n", REG_GPSET0,    (REG_GPSET0-REG_GPFSEL0),    gpio_set[0],    (*gpio_set[0])    );
-	printf("[GPIO] | REG_GPSET1    | 0x%08X | 0x%08X | 0x%08X | 0x%08X |\n", REG_GPSET1,    (REG_GPSET1-REG_GPFSEL0),    gpio_set[1],    (*gpio_set[1])    );
-	printf("[GPIO] | REG_GPCLR0    | 0x%08X | 0x%08X | 0x%08X | 0x%08X |\n", REG_GPCLR0,    (REG_GPCLR0-REG_GPFSEL0),    gpio_clr[0],    (*gpio_clr[0])    );
-	printf("[GPIO] | REG_GPCLR1    | 0x%08X | 0x%08X | 0x%08X | 0x%08X |\n", REG_GPCLR1,    (REG_GPCLR1-REG_GPFSEL0),    gpio_clr[1],    (*gpio_clr[1])    );
-	printf("[GPIO] | REG_GPLEV0    | 0x%08X | 0x%08X | 0x%08X | 0x%08X |\n", REG_GPLEV0,    (REG_GPLEV0-REG_GPFSEL0),    gpio_lev[0],    (*gpio_lev[0])    );
-	printf("[GPIO] | REG_GPLEV1    | 0x%08X | 0x%08X | 0x%08X | 0x%08X |\n", REG_GPLEV1,    (REG_GPLEV1-REG_GPFSEL0),    gpio_lev[1],    (*gpio_lev[1])    );
-	printf("[GPIO] | REG_GPPUD     | 0x%08X | 0x%08X | 0x%08X | 0x%08X |\n", REG_GPPUD,     (REG_GPPUD-REG_GPFSEL0),     gpio_pud,       (*gpio_pud)       );
-	printf("[GPIO] | REG_GPPUDCLK0 | 0x%08X | 0x%08X | 0x%08X | 0x%08X |\n", REG_GPPUDCLK0, (REG_GPPUDCLK0-REG_GPFSEL0), gpio_pudclk[0], (*gpio_pudclk[0]) );
-	printf("[GPIO] | REG_GPPUDCLK1 | 0x%08X | 0x%08X | 0x%08X | 0x%08X |\n", REG_GPPUDCLK1, (REG_GPPUDCLK1-REG_GPFSEL0), gpio_pudclk[1], (*gpio_pudclk[1]) );
-	printf("[GPIO] | ------------- | ---------- | ---------- | ---------- | ---------- |\n");
+	LOG("| ------------- | ---------- | ---------- | ---------- | ---------- |");
+	LOG("| Name          | Original   | Offset     | Mapped     | Value      |");
+	LOG("| ------------- | ---------- | ---------- | ---------- | ---------- |");
+	LOG("| REG_GPFSEL0   | 0x%08X | 0x%08X | 0x%08X | 0x%08X |", REG_GPFSEL0,   (REG_GPFSEL0-REG_GPFSEL0),   gpio_fsel[0],   (*gpio_fsel[0])   );
+	LOG("| REG_GPFSEL1   | 0x%08X | 0x%08X | 0x%08X | 0x%08X |", REG_GPFSEL1,   (REG_GPFSEL1-REG_GPFSEL0),   gpio_fsel[1],   (*gpio_fsel[1])   );
+	LOG("| REG_GPFSEL2   | 0x%08X | 0x%08X | 0x%08X | 0x%08X |", REG_GPFSEL2,   (REG_GPFSEL2-REG_GPFSEL0),   gpio_fsel[2],   (*gpio_fsel[2])   );
+	LOG("| REG_GPFSEL3   | 0x%08X | 0x%08X | 0x%08X | 0x%08X |", REG_GPFSEL3,   (REG_GPFSEL3-REG_GPFSEL0),   gpio_fsel[3],   (*gpio_fsel[3])   );
+	LOG("| REG_GPFSEL4   | 0x%08X | 0x%08X | 0x%08X | 0x%08X |", REG_GPFSEL4,   (REG_GPFSEL4-REG_GPFSEL0),   gpio_fsel[4],   (*gpio_fsel[4])   );
+	LOG("| REG_GPFSEL5   | 0x%08X | 0x%08X | 0x%08X | 0x%08X |", REG_GPFSEL5,   (REG_GPFSEL5-REG_GPFSEL0),   gpio_fsel[5],   (*gpio_fsel[5])   );
+	LOG("| REG_GPSET0    | 0x%08X | 0x%08X | 0x%08X | 0x%08X |", REG_GPSET0,    (REG_GPSET0-REG_GPFSEL0),    gpio_set[0],    (*gpio_set[0])    );
+	LOG("| REG_GPSET1    | 0x%08X | 0x%08X | 0x%08X | 0x%08X |", REG_GPSET1,    (REG_GPSET1-REG_GPFSEL0),    gpio_set[1],    (*gpio_set[1])    );
+	LOG("| REG_GPCLR0    | 0x%08X | 0x%08X | 0x%08X | 0x%08X |", REG_GPCLR0,    (REG_GPCLR0-REG_GPFSEL0),    gpio_clr[0],    (*gpio_clr[0])    );
+	LOG("| REG_GPCLR1    | 0x%08X | 0x%08X | 0x%08X | 0x%08X |", REG_GPCLR1,    (REG_GPCLR1-REG_GPFSEL0),    gpio_clr[1],    (*gpio_clr[1])    );
+	LOG("| REG_GPLEV0    | 0x%08X | 0x%08X | 0x%08X | 0x%08X |", REG_GPLEV0,    (REG_GPLEV0-REG_GPFSEL0),    gpio_lev[0],    (*gpio_lev[0])    );
+	LOG("| REG_GPLEV1    | 0x%08X | 0x%08X | 0x%08X | 0x%08X |", REG_GPLEV1,    (REG_GPLEV1-REG_GPFSEL0),    gpio_lev[1],    (*gpio_lev[1])    );
+	LOG("| REG_GPPUD     | 0x%08X | 0x%08X | 0x%08X | 0x%08X |", REG_GPPUD,     (REG_GPPUD-REG_GPFSEL0),     gpio_pud,       (*gpio_pud)       );
+	LOG("| REG_GPPUDCLK0 | 0x%08X | 0x%08X | 0x%08X | 0x%08X |", REG_GPPUDCLK0, (REG_GPPUDCLK0-REG_GPFSEL0), gpio_pudclk[0], (*gpio_pudclk[0]) );
+	LOG("| REG_GPPUDCLK1 | 0x%08X | 0x%08X | 0x%08X | 0x%08X |", REG_GPPUDCLK1, (REG_GPPUDCLK1-REG_GPFSEL0), gpio_pudclk[1], (*gpio_pudclk[1]) );
+	LOG("| ------------- | ---------- | ---------- | ---------- | ---------- |");
 }
 
 gpio_device::~gpio_device() {
@@ -121,7 +123,7 @@ gpio_device::~gpio_device() {
 	int status_27;
 	int status_28;
 
-	printf("[GPIO] De allocating memory.\n");
+	LOG("De allocating memory.");
 
 	status_0 = munmap(gpio_fsel[0], 4);
 	status_1 = munmap(gpio_fsel[1], 4);
@@ -139,7 +141,7 @@ gpio_device::~gpio_device() {
 	status_27 = munmap(gpio_pudclk[0], 4);
 	status_28 = munmap(gpio_pudclk[1], 4);
 
-	printf("[GPIO] Checking de allocation.\n");
+	LOG("Checking de allocation.");
 
 	assert(status_0 >= 0, "Unable to disable access at memory address gpio_fsel[0]");
 	assert(status_1 >= 0, "Unable to disable access at memory address gpio_fsel[1]");
@@ -163,7 +165,7 @@ void gpio_device::direction(uint32_t pin, direction_t dir) {
 
 	assert(pin <= 53, "Pin value too high.");
 
-	printf("[GPIO] Calculate position in memory.\n");
+	LOG("Calculate position in memory.");
 
 	uint32_t register_num = pin / 10;
 	uint32_t field_num    = pin % 10;
@@ -171,16 +173,16 @@ void gpio_device::direction(uint32_t pin, direction_t dir) {
 	assert(register_num <= 5, "Register value too high.");
 	assert(field_num <= 9, "Field value too high.");
 
-	printf("[GPIO] Calculate value.\n");
+	LOG("Calculate value.");
 
 	uint32_t value = (uint32_t)dir;
 
-	printf("[GPIO] Create access medium.\n");
+	LOG("Create access medium.");
 
 	uint32_t* register_addr = gpio_fsel[register_num];
 	uint32_t register_offs = field_num *3;
 
-	printf("[GPIO] Write to memory the new GPIO direction.\n");
+	LOG("Write to memory the new GPIO direction.");
 
 	uint32_t curr_value = (*register_addr);
 	curr_value = curr_value & (~(0x00000000 | (0x07 << register_offs)));
@@ -261,7 +263,7 @@ void gpio_device::pull(uint32_t pin, pull_t type) {
 
 	assert(pin <= 53, "Pin value too high.");
 
-	printf("[GPIO] Calculate position in memory.\n");
+	LOG("Calculate position in memory.");
 
 	uint32_t register_num = pin / 32;
 	uint32_t field_num    = pin % 32;
@@ -275,7 +277,7 @@ void gpio_device::pull(uint32_t pin, pull_t type) {
 	uint32_t* register_clock_addr   = gpio_pudclk[register_num];
 	uint32_t register_offs = field_num * 1;
 
-	printf("[GPIO] Write to memory - sequence is described at page 101.\n");
+	LOG("Write to memory - sequence is described at page 101.");
 
 	if (type == DOWN) {
 		(*register_control_addr) = 0x00000001;
@@ -290,15 +292,15 @@ void gpio_device::pull(uint32_t pin, pull_t type) {
 		assert(false, "Type is not allowed.");
 	}
 
-	printf("[GPIO] Wait for 150 cycles.\n");
+	LOG("Wait for 150 cycles.");
 
 	(*register_clock_addr) = (1 << register_offs);
 
-	printf("[GPIO] Wait for 150 cycles.\n");
+	LOG("Wait for 150 cycles.");
 
 	(*register_control_addr) = 0x00000000;
 	(*register_clock_addr) = 0x00000000;
 
-	printf("[GPIO] Pull sequence finished.\n");
+	LOG("Pull sequence finished.");
 
 }
