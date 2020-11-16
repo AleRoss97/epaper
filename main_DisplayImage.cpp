@@ -14,7 +14,7 @@
 /* -------------------------------------------------------------------------- */
 
 #include "epaper.h"
-#include "../cbmp/cbmp.h"
+#include "cbmp.h"
 #include <unistd.h>
 #include <stdio.h>
 

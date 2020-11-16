@@ -13,26 +13,50 @@
 
 clear;
 
+function compile {
+
+	if test -f "$1.o"
+	then
+		echo Not compiling $1
+	else
+		echo Compiling $1
+		
+		if test -f "$1.cpp"
+		then
+			g++ -Wno-write-strings -g -c $1.cpp -o $1.o
+		else
+			g++ -Wno-write-strings -g -c $1.c -o $1.o
+		fi
+
+	fi
+
+}
+
+if [ -z "$1" ]
+then
+    echo "Compiling only missing files..."
+else
+	if [ "$1" = "all" ]
+	then
+    	echo "Removed all output files"
+		rm *.o
+	else
+		echo "Removing file $1"
+		rm $1.o
+	fi
+fi
+
 # ---------------------------------------------------------------------------- #
 # Compiling libraries                                                          #
 # ---------------------------------------------------------------------------- #
 
 echo
-
-echo Compiling epaper library
-g++ -Wno-write-strings -g -c epaper.cpp
-
-echo Compiling gpio device
-g++ -Wno-write-strings -g -c gpio_device.cpp
-
-echo Compiling spi device
-g++ -Wno-write-strings -g -c spi_device.cpp
-
-echo Compiling bmp library
-g++ -Wno-write-strings -g -c cbmp.c -o cbmp.o
-
-echo Compiling graphic library
-g++ -Wno-write-strings -g -c graphic_device.cpp -o graphic_device.o
+compile epaper
+compile gpio_device
+compile spi_device
+compile cbmp
+compile graphic_device
+compile i2c_device
 
 # ---------------------------------------------------------------------------- #
 # Compiling main programs                                                      #
@@ -40,14 +64,10 @@ g++ -Wno-write-strings -g -c graphic_device.cpp -o graphic_device.o
 
 echo
 
-echo Compiling main_DisplayImage
-g++ -fpermissive -Wno-write-strings -g -c main_DisplayImage.cpp -o main_DisplayImage.o
-
-echo Compiling main_DisplayGrid.cpp
-g++ -fpermissive -Wno-write-strings -g -c main_DisplayGrid.cpp -o main_DisplayGrid.o
-
-echo Compiling main_GraphicTest.cpp
-g++ -fpermissive -Wno-write-strings -g -c main_GraphicTest.cpp -o main_GraphicTest.o
+compile main_DisplayImage
+compile main_DisplayGrid
+compile main_GraphicTest
+compile main_TestButtonsLeds
 
 # ---------------------------------------------------------------------------- #
 # Links main programs                                                          #
@@ -56,13 +76,16 @@ g++ -fpermissive -Wno-write-strings -g -c main_GraphicTest.cpp -o main_GraphicTe
 echo
 
 echo Linking DisplayImage
-g++ -g epaper.o gpio_device.o spi_device.o cbmp.o main_DisplayImage.o -o app_DisplayImage.o
+g++ -g epaper.o gpio_device.o spi_device.o cbmp.o main_DisplayImage.o -li2c -o app_DisplayImage.o
 
 echo Linking DisplayGrid
-g++ -g epaper.o gpio_device.o spi_device.o cbmp.o main_DisplayGrid.o -o app_DisplayGrid.o
+g++ -g epaper.o gpio_device.o spi_device.o cbmp.o main_DisplayGrid.o -li2c -o app_DisplayGrid.o
 
 echo Linking GraphicTest
-g++ -g graphic_device.o gpio_device.o spi_device.o main_GraphicTest.o -o app_GraphicTest.o
+g++ -g graphic_device.o gpio_device.o spi_device.o main_GraphicTest.o -li2c -o app_GraphicTest.o
+
+echo Linking TestButtonsLeds
+g++ -g graphic_device.o gpio_device.o spi_device.o i2c_device.o main_TestButtonsLeds.o -li2c -o app_TestButtonsLeds.o
 
 # ---------------------------------------------------------------------------- #
 # End of program                                                               #
