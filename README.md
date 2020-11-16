@@ -1,15 +1,18 @@
 # epaper
 
-Lbrary for using the Pimoroni InkyPhat display with SSD 1608 controller in C++ language on the Raspberry Pi Zero W.
+Project for displaying stories with Pimoroni GFX HAT and Raspberry Pi Zero
 
 These repository contains
+
 - Three cpp classes:
 
   - spi_device: uses /dev/spi*.* to comunicate with the display (so the SPI driver must be enabled - see config.txt on raspberry pi)
 
   - gpio_device: direct access to memory to handle the GPIO pins
 
-  - epaper: Provides a buffer and the functions to transfer that buffer to the display
+  - graphic_device: class to handle the GFX HAT display, requires spi_device and gpio_device
+
+  - epaper: Old class to handle InkyPhat epaper display, not used anymore
   
 - Two files from another repository (https://github.com/mattflow/cbmp):
 
@@ -29,17 +32,25 @@ This will generate:
 
 - app_DisplayImage.o: displays the image "prova.bmp" to the display. Must be of the right size, if not an error is generated.
 
+- app_GraphicTest.o: displays a moving square on the display
+
+- app_TestButtonsLeds.o: uses directly i2c to test buttons and leds
+
 ## Issues
 
 Opened issues:
 
-- Reading from the display always reads 0 - This is not a big issue since no values need to be red from the display, however **this makes the self test fail** but everything else works ok.
+- SPI might always read 0
+
+## Unsupported
+
+- Fast update on the inky phat display 
 
 ## Work in progress
 
 This i'm working on and eventually do and update:
 
-- Fast update - I ported python code to c++ to implement this.
+- Niente
 
 ## Useful links
 
