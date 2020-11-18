@@ -1,3 +1,5 @@
+#ifndef _GRAPHIC_DEVICE_
+#define _GRAPHIC_DEVICE_
 
 #include <stdint.h>
 #include "gpio_device.h"
@@ -37,3 +39,5 @@ class graphic_device {
 		void pack_buffer(void);
 
 };
+
+#endif

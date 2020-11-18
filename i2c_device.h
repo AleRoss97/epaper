@@ -1,3 +1,5 @@
+#ifndef _I2C_DEVICE_
+#define _I2C_DEVICE_
 
 #include <stdint.h>
 
@@ -13,3 +15,5 @@ class i2c_device {
 };
 
 
+
+#endif

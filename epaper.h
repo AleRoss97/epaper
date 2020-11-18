@@ -1,3 +1,5 @@
+#ifndef _EPAPER_DEVICE_
+#define _EPAPER_DEVICE_
 /* -------------------------------------------------------------------------- */
 /* NAME: Epaper Display CPP - Inky phat Pimoroni                              */
 /* -------------------------------------------------------------------------- */
@@ -54,3 +56,5 @@ class epaper {
 		void wait_while_busy();
 
 };
+
+#endif

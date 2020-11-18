@@ -1,3 +1,5 @@
+#ifndef _GPIO_DEVICE_
+#define _GPIO_DEVICE_
 /* -------------------------------------------------------------------------- */
 /* NAME: GPIO Device H - Raspberry Pi Zero W                                  */
 /* -------------------------------------------------------------------------- */
@@ -139,3 +141,5 @@ class gpio_device {
 		uint32_t* gpio_pudclk[2];
 
 };
+
+#endif

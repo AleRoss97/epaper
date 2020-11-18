@@ -32,13 +32,13 @@ int main(int argc, char const *argv[]) {
 	printf("[MAIN] Displaying line\n");
 
 	while (1) {
-	uint32_t x,y;
-	for (x = 0; x < disp->height-20; x+=10) {
-		disp->clean(0);
-		psquare(x,x,20);
-		disp->show();
-		sleepms(100);
-	}
+		uint32_t x,y;
+		for (x = 0; x < disp->height-20; x+=10) {
+			disp->clean(0);
+			psquare(x,x,20);
+			disp->show();
+			sleepms(100);
+		}
 	}
 
 	printf("[MAIN] Exiting...\n");

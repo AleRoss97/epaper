@@ -57,6 +57,8 @@ compile spi_device
 compile cbmp
 compile graphic_device
 compile i2c_device
+compile io_device
+compile backlight_device
 
 # ---------------------------------------------------------------------------- #
 # Compiling main programs                                                      #
@@ -68,6 +70,8 @@ compile main_DisplayImage
 compile main_DisplayGrid
 compile main_GraphicTest
 compile main_TestButtonsLeds
+compile main_TestBackLight
+compile main_TestFull
 
 # ---------------------------------------------------------------------------- #
 # Links main programs                                                          #
@@ -85,7 +89,13 @@ echo Linking GraphicTest
 g++ -g graphic_device.o gpio_device.o spi_device.o main_GraphicTest.o -li2c -o app_GraphicTest.o
 
 echo Linking TestButtonsLeds
-g++ -g graphic_device.o gpio_device.o spi_device.o i2c_device.o main_TestButtonsLeds.o -li2c -o app_TestButtonsLeds.o
+g++ -g graphic_device.o gpio_device.o spi_device.o i2c_device.o io_device.o main_TestButtonsLeds.o -li2c -o app_TestButtonsLeds.o
+
+echo Linking TestBackLight
+g++ -g i2c_device.o backlight_device.o main_TestBackLight.o -li2c -o app_TestBackLight.o
+
+echo Linking TestFull
+g++ -g backlight_device.o gpio_device.o graphic_device.o i2c_device.o io_device.o spi_device.o  main_TestFull.o -li2c -o app_TestFull.o
 
 # ---------------------------------------------------------------------------- #
 # End of program                                                               #
